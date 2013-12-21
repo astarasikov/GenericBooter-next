@@ -1,0 +1,46 @@
+#
+# For a description of the syntax of this configuration file,
+# see scripts/config-language.txt.
+#
+mainmenu "GenericBooter/$ARCH Configuration"
+
+choice
+	prompt "ARM processor target"
+	default PROC_CORTEX_A8
+
+config PROC_CORTEX_A8
+	bool "Cortex-A8"
+
+config PROC_ARM1176JZFS
+	bool "ARM1176JZF-S"
+
+endchoice
+
+choice
+	prompt "ARM board target"
+	default BOARD_ARM_REALVIEW
+
+config BOARD_ARM_REALVIEW
+	bool "ARM RealView"
+
+config BOARD_OMAP34XX
+	bool "Texas Instruments OMAP3XXX"
+	depends on !PROC_ARM1176JZFS
+
+config BOARD_AM335X
+	bool "Texas Instruments AM335X"
+	depends on !PROC_ARM1176JZFS
+
+endchoice
+
+choice
+	prompt "Device tree style"
+	default DT_SUPPORT_APPLE_FDT
+
+config DT_SUPPORT_APPLE_FDT
+	bool "iOS-compatible flattened device tree"
+
+config DT_SUPPORT_XML
+	bool "XML device tree"
+
+endchoice
