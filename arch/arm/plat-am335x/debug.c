@@ -29,6 +29,7 @@
 
 #include "genboot.h"
 #include <stdarg.h>
+#include <stdio.h>
 
 /* Uart stuff */
 
@@ -104,6 +105,20 @@ void __assert_func(const char *file, int line, const char *method,
     panic("Assertion failed in file %s, line %d. (%s)\n",
           file, line, expression);
     while (1) ;
+}
+
+
+/**
+ * puts
+ */
+int puts(const char* fmt)
+{
+    while(*fmt != '\0') {
+        uart_putchar(*fmt);
+        fmt++;
+    }
+    uart_putchar('\n');
+    return 0;
 }
 
 /**
