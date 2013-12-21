@@ -96,3 +96,5 @@ x509.genkey
 uImage
 *.img3
 *.lds
+arch/arm/common/version.S
+
