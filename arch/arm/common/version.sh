@@ -1,3 +1,9 @@
+#!/bin/sh
+BUILD_TITLE=$(printf "%s for %s, Copyright 2013, winocm." $2 $3)
+BUILD_BUILD=$(printf \"%s\" $4)
+BUILD_REVISION=$(printf \"%s\" $5)
+
+cat << EOF > $1
 /*
  * Copyright 2013, winocm. <winocm@icloud.com>
  * All rights reserved.
@@ -26,6 +32,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+/*
+ * This file is machine generated!
+ */
 
-const char *gBuildStyle = BUILD_STYLE;
-const char *gBuildTag = BUILD_TAG;
+.section .bl_title,"aS"
+.globl _bl_title
+_bl_title:
+    .asciz $(printf \"%s\" "$BUILD_TITLE")
+    .align 4
+
+.section .bl_build,"aS"
+.globl _bl_build
+_bl_build:
+    .asciz $BUILD_BUILD
+    .align 4
+
+.section .bl_revision,"aS"
+.globl _bl_revision
+_bl_revision:
+    .asciz $BUILD_REVISION
+    .align 4
+
+EOF

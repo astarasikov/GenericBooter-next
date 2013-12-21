@@ -13,7 +13,15 @@
 # Ensure linker flags are correct
 LDFLAGS		:=
 
-KBUILD_CFLAGS	+=-fstack-protector
+# Platform Names
+
+platname-$(CONFIG_BOARD_OMAP34XX) 		+= "OMAP3"
+platname-$(CONFIG_BOARD_AM335X) 		+= "AM335X"
+platname-$(CONFIG_BOARD_ARM_REALVIEW) 	+= "RealView"
+export platname-y := $(platname-y)
+
+KBUILD_CFLAGS	+=-fstack-protector -DBUILD_STYLE=\"DEVELOPMENT\" -DBUILD_TAG=\"$(shell git describe --dirty)\" \
+				-DPLATFORM_NAME=$(platname-y)
 
 # Little endian
 KBUILD_CPPFLAGS	+= -mlittle-endian

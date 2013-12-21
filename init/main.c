@@ -97,6 +97,7 @@ extern void *_start;
 
 extern const char *gBuildTag;
 extern const char *gBuildStyle;
+extern const char *_bl_title;
 
 /**
  * corestart_main
@@ -114,7 +115,7 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
      */
     printf("=======================================\n"
            "::\n"
-           ":: GenericBooter, Copyright 2013, winocm.\n"
+           ":: %s\n"
            "::\n"
            "::\tBUILD_TAG: %s\n"
            "::\n"
@@ -122,7 +123,8 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
            "::\n"
            "::\tCOMPILE_DATE: " __DATE__ " " __TIME__ "\n"
            "::\n"
-           "=======================================\n", gBuildTag, gBuildStyle);
+           "=======================================\n", &_bl_title,
+           gBuildTag, gBuildStyle);
 
     bzero((void *)&gBootArgs, sizeof(boot_args));
 
