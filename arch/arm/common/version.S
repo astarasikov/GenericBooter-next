@@ -33,7 +33,7 @@
 .section .bl_title,"aS"
 .globl _bl_title
 _bl_title:
-    .asciz "GenericBooter for RealView, Copyright 2013, winocm."
+    .asciz "GenericBooter for HP-TouchPad, Copyright 2013, winocm."
     .align 4
 
 .section .bl_build,"aS"
@@ -45,6 +45,6 @@ _bl_build:
 .section .bl_revision,"aS"
 .globl _bl_revision
 _bl_revision:
-    .asciz "GenericBooter-200.1-3-ge9de8a3"
+    .asciz "GenericBooter-200.1-5-g773f514-dirty"
     .align 4
 

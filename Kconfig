@@ -23,6 +23,10 @@ choice
 config BOARD_ARM_REALVIEW
 	bool "ARM RealView"
 
+config BOARD_HPTOUCHPAD
+	bool "HP TouchPad"
+	depends on !PROC_ARM1176JZFS
+
 config BOARD_OMAP34XX
 	bool "Texas Instruments OMAP3XXX"
 	depends on !PROC_ARM1176JZFS

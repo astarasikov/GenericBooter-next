@@ -18,6 +18,8 @@ LDFLAGS		:=
 platname-$(CONFIG_BOARD_OMAP34XX) 		+= "OMAP3"
 platname-$(CONFIG_BOARD_AM335X) 		+= "AM335X"
 platname-$(CONFIG_BOARD_ARM_REALVIEW) 	+= "RealView"
+platname-$(CONFIG_BOARD_HPTOUCHPAD)		+= "HP-TouchPad"
+
 export platname-y := $(platname-y)
 
 KBUILD_CFLAGS	+=-fstack-protector -DBUILD_STYLE=\"DEVELOPMENT\" -DBUILD_TAG=\"$(shell git describe --dirty)\" \
@@ -41,6 +43,7 @@ textofs-y 							:= 0x00000040
 textofs-$(CONFIG_BOARD_OMAP34XX) 	:= 0x84000040
 textofs-$(CONFIG_BOARD_AM335X) 		:= 0x84000040
 textofs-$(CONFIG_BOARD_ARM_REALVIEW)	:= 0x84000040
+textofs-$(CONFIG_BOARD_HPTOUCHPAD)	:= 0x44000040
 
 export TEXT_OFFSET := $(textofs-y)
 
@@ -67,5 +70,6 @@ uImage:
 core-$(CONFIG_BOARD_OMAP34XX) 		+= arch/arm/plat-omap3/
 core-$(CONFIG_BOARD_AM335X) 		+= arch/arm/plat-am335x/
 core-$(CONFIG_BOARD_ARM_REALVIEW) 	+= arch/arm/plat-realview/
+core-$(CONFIG_BOARD_HPTOUCHPAD)		+= arch/arm/plat-hptouchpad/
 
 core-y				+= arch/arm/common/

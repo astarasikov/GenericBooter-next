@@ -132,6 +132,7 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
      * Set up boot_args based on atag data, the rest will be filled out during
      * initialization.
      */
+#ifndef CONFIG_BOARD_HPTOUCHPAD
     struct atag_header *atag_base = (struct atag_header *)atags;
     uint32_t tag = atag_base->tag;
 
@@ -155,6 +156,25 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
         atag_base =
             (struct atag_header *)((uint32_t *) atag_base + (atag_base->size));
     };
+#endif
+
+#ifdef CONFIG_BOARD_HPTOUCHPAD
+    /*
+     * TouchPad is a tiny bit iffy. ATAGs sent by the bootloader are *broken*. Whoever
+     * thought *this* was a good idea... well. IT WASN'T. ;lsdf;dfkg
+     */
+
+    /* Artificial RAM base for now. */
+    gBootArgs.physBase = 0x40000000;
+    gBootArgs.memSize = 128 * 1024 * 1024;
+
+    malloc_init((char *)gBootArgs.physBase + gBootArgs.memSize -
+                MALLOC_SIZE, MALLOC_SIZE);
+    is_malloc_inited = 1;
+
+    /* Bringup boot-args. */
+    strncpy(gBootArgs.commandLine, "rd=md0 debug=0x16f -v -s serial=2 -no-cache", BOOT_LINE_LENGTH);
+#endif
 
     if (!is_malloc_inited)
         panic("malloc not inited");

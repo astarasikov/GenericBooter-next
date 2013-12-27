@@ -74,9 +74,11 @@ EnterARM(locore_jump_to)
     mov     r10, r1
 
 #ifdef CONFIG_PROC_CORTEX_A8
+#ifndef CONFIG_BOARD_HPTOUCHPAD     /* L2 cache is controlled by PrimeCell L2 on Cortex-A9. */
     mrc     p15, 0, r0, c1, c0, 1   /* read Auxiliary Control Register */
     bic     r0, r0, #0x00000002     /* disable L2 cache */
     mcr     p15, 0, r0, c1, c0, 1   /* store Auxiliary Control Register */
+#endif
 #endif
 
     /* Disable caching entirely. */
