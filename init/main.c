@@ -170,10 +170,15 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
 
     malloc_init((char *)gBootArgs.physBase + gBootArgs.memSize -
                 MALLOC_SIZE, MALLOC_SIZE);
+
+    /* Reset for main DRAM region. */
+    gBootArgs.physBase = 0x70000000;
+    gBootArgs.memSize = 768 * 1024 * 1024;
+
     is_malloc_inited = 1;
 
     /* Bringup boot-args. */
-    strncpy(gBootArgs.commandLine, "rd=md0 debug=0x16f -v -s serial=2 -no-cache", BOOT_LINE_LENGTH);
+    strncpy(gBootArgs.commandLine, "rd=md0 debug=0x16f -v -s serial=2", BOOT_LINE_LENGTH);
 #endif
 
     if (!is_malloc_inited)
