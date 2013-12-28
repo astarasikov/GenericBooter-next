@@ -8,6 +8,9 @@ choice
 	prompt "ARM processor target"
 	default PROC_CORTEX_A8
 
+config PROC_CORTEX_A9
+	bool "Cortex-A9"
+
 config PROC_CORTEX_A8
 	bool "Cortex-A8"
 
@@ -25,15 +28,19 @@ config BOARD_ARM_REALVIEW
 
 config BOARD_HPTOUCHPAD
 	bool "HP TouchPad"
-	depends on !PROC_ARM1176JZFS
+	depends on PROC_CORTEX_A9
+
+config BOARD_HTC_HD2
+	bool "HTC HD2"
+	depends on PROC_CORTEX_A8
 
 config BOARD_OMAP34XX
 	bool "Texas Instruments OMAP3XXX"
-	depends on !PROC_ARM1176JZFS
+	depends on PROC_CORTEX_A8
 
 config BOARD_AM335X
 	bool "Texas Instruments AM335X"
-	depends on !PROC_ARM1176JZFS
+	depends on PROC_CORTEX_A8
 
 endchoice
 

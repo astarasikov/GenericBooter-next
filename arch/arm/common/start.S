@@ -25,6 +25,7 @@ EnterARM(start)
     /* We are in supervisor, no interrupts. */
     cpsid   if, #0x13
 
+#ifndef CONFIG_BOARD_HTC_HD2
     /* Verify that things are defined properly. */
     cmp     r2, #0
     beq     lol_no_atags
@@ -34,6 +35,7 @@ EnterARM(start)
     ldr     r3, [r2, #4]
     cmp     r3, r4
     bne     lol_no_atags
+#endif
 
     /*
      * Things look semi good, (we hope we're running at the right
@@ -74,11 +76,9 @@ EnterARM(locore_jump_to)
     mov     r10, r1
 
 #ifdef CONFIG_PROC_CORTEX_A8
-#ifndef CONFIG_BOARD_HPTOUCHPAD     /* L2 cache is controlled by PrimeCell L2 on Cortex-A9. */
     mrc     p15, 0, r0, c1, c0, 1   /* read Auxiliary Control Register */
     bic     r0, r0, #0x00000002     /* disable L2 cache */
     mcr     p15, 0, r0, c1, c0, 1   /* store Auxiliary Control Register */
-#endif
 #endif
 
     /* Disable caching entirely. */

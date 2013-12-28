@@ -132,7 +132,7 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
      * Set up boot_args based on atag data, the rest will be filled out during
      * initialization.
      */
-#ifndef CONFIG_BOARD_HPTOUCHPAD
+#if !defined(CONFIG_BOARD_HPTOUCHPAD) || !defined(CONFIG_BOARD_HTC_HD2)
     struct atag_header *atag_base = (struct atag_header *)atags;
     uint32_t tag = atag_base->tag;
 
@@ -158,6 +158,18 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
     };
 #endif
 
+#ifdef CONFIG_BOARD_HTC_HD2
+    /* Artificial RAM base for now. */
+    gBootArgs.physBase = 0x20000000;
+    gBootArgs.memSize = 256 * 1024 * 1024;
+
+    malloc_init((char *)gBootArgs.physBase + gBootArgs.memSize -
+                MALLOC_SIZE, MALLOC_SIZE);
+    is_malloc_inited = 1;
+
+    /* Bringup boot-args. */
+    strncpy(gBootArgs.commandLine, "rd=md0 -v -s debug=0x16f kprintf=1", BOOT_LINE_LENGTH);
+#endif
 #ifdef CONFIG_BOARD_HPTOUCHPAD
     /*
      * TouchPad is a tiny bit iffy. ATAGs sent by the bootloader are *broken*. Whoever
@@ -178,7 +190,7 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
     is_malloc_inited = 1;
 
     /* Bringup boot-args. */
-    strncpy(gBootArgs.commandLine, "rd=md0 debug=0x16f -v -s serial=2", BOOT_LINE_LENGTH);
+    strncpy(gBootArgs.commandLine, "rd=md0 -v serial=2", BOOT_LINE_LENGTH);
 #endif
 
     if (!is_malloc_inited)

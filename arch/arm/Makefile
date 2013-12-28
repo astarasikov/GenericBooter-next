@@ -19,6 +19,7 @@ platname-$(CONFIG_BOARD_OMAP34XX) 		+= "OMAP3"
 platname-$(CONFIG_BOARD_AM335X) 		+= "AM335X"
 platname-$(CONFIG_BOARD_ARM_REALVIEW) 	+= "RealView"
 platname-$(CONFIG_BOARD_HPTOUCHPAD)		+= "HP-TouchPad"
+platname-$(CONFIG_BOARD_HTC_HD2)		+= "HTC-HD2"
 
 export platname-y := $(platname-y)
 
@@ -33,6 +34,7 @@ LD		+= -EL -nostdlib
 omma = ,
 
 # Processor type
+arch-$(CONFIG_PROC_CORTEX_A9)		=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
 arch-$(CONFIG_PROC_CORTEX_A8)		=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
 arch-$(PROC_ARM1176JZFS)			=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
 
@@ -44,6 +46,8 @@ textofs-$(CONFIG_BOARD_OMAP34XX) 	:= 0x84000040
 textofs-$(CONFIG_BOARD_AM335X) 		:= 0x84000040
 textofs-$(CONFIG_BOARD_ARM_REALVIEW)	:= 0x84000040
 textofs-$(CONFIG_BOARD_HPTOUCHPAD)	:= 0x44000040
+
+textofs-$(CONFIG_BOARD_HTC_HD2)		:= 0x11808000
 
 export TEXT_OFFSET := $(textofs-y)
 
@@ -64,12 +68,13 @@ uImage:
 	@echo Generating uImage...
 	@$(OBJCOPY) -g -S -O binary vmlinux vmlinux.raw
 	@mkimage -A arm -O linux -T kernel -C none -a $(TEXT_OFFSET) -e $(TEXT_OFFSET) -n "Linux 2.6" -d vmlinux.raw uImage
-	@rm -f vmlinux.raw
+	# rm -f vmlinux.raw
 
 # Boards
 core-$(CONFIG_BOARD_OMAP34XX) 		+= arch/arm/plat-omap3/
 core-$(CONFIG_BOARD_AM335X) 		+= arch/arm/plat-am335x/
 core-$(CONFIG_BOARD_ARM_REALVIEW) 	+= arch/arm/plat-realview/
 core-$(CONFIG_BOARD_HPTOUCHPAD)		+= arch/arm/plat-hptouchpad/
+core-$(CONFIG_BOARD_HTC_HD2)		+= arch/arm/plat-htchd2/
 
 core-y				+= arch/arm/common/

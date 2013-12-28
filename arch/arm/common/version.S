@@ -45,6 +45,6 @@ _bl_build:
 .section .bl_revision,"aS"
 .globl _bl_revision
 _bl_revision:
-    .asciz "GenericBooter-200.1-5-g773f514-dirty"
+    .asciz "GenericBooter-200.1-7-gad4c097-dirty"
     .align 4
 
