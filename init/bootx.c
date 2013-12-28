@@ -478,6 +478,26 @@ int prepare_devicetree_stage2(void)
                             kBootDriverTypeInvalid);
     }
 
+    /* Check for mkexts. */
+    void *mkextImage, *mkextBase;
+    uint32_t mkextSize;
+
+    mkextImage = get_image3('mkxt');
+    if(mkextImage) {
+        image3_get_tag_data(mkextImage, kImage3TagData, (void**)&mkextBase, &mkextSize);
+        if(mkextBase) {
+            char nameBuffer[64];
+            void* relocMkextBase = (void*)memory_region_reserve(&kernel_region, mkextSize, 4096);
+            printf("creating mkext base of size 0x%x at 0x%x from image at 0x%x\n",
+                   mkextSize, relocMkextBase, mkextBase);
+            bcopy((void*)mkextBase, relocMkextBase, mkextSize);
+            sprintf(nameBuffer, "DriversPackage-%x", relocMkextBase);
+            AllocateMemoryRange(memory_map, nameBuffer,
+                                (uint32_t) relocMkextBase, mkextSize,
+                                kBootDriverTypeMKEXT);            
+        }
+    }
+
     /* Flatten the finalized device-tree image. */
     DT__FlattenDeviceTree(NULL, &deviceTreeLength);
 
@@ -538,8 +558,12 @@ void start_darwin(void)
     kernel_region.pos = kernel_region.base = (gBootArgs.physBase + 0x1000);
 
     /* XXX: Zero out beginning of RAM. */
-    printf("preparing system...\n");
+    printf("- Preparing system...\n");
+#ifdef CONFIG_BOARD_HPTOUCHPAD
+    bzero((void *)gBootArgs.physBase, (128 * 1024 * 1024));
+#else
     bzero((void *)gBootArgs.physBase, (64 * 1024 * 1024));
+#endif
 
     /* Initialize boot-args. */
     assert(prepare_boot_args());
