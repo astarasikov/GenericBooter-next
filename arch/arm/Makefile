@@ -63,7 +63,7 @@ PHONY += uImage
 archprepare:
 	$(Q)$(MAKE) $(build)=images Images
 
-uImage:
+uImage: vmlinux
 	# Create image.
 	@echo Generating uImage...
 	@$(OBJCOPY) -g -S -O binary vmlinux vmlinux.raw
