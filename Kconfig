@@ -34,6 +34,10 @@ config BOARD_HTC_HD2
 	bool "HTC HD2"
 	depends on PROC_CORTEX_A8
 
+config BOARD_OMAP54XX
+	bool "Texas Instruments OMAP54XX"
+	depends on PROC_CORTEX_A9
+
 config BOARD_OMAP34XX
 	bool "Texas Instruments OMAP3XXX"
 	depends on PROC_CORTEX_A8

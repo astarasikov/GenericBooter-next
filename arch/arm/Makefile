@@ -16,6 +16,7 @@ LDFLAGS		:=
 # Platform Names
 
 platname-$(CONFIG_BOARD_OMAP34XX) 		+= "OMAP3"
+platname-$(CONFIG_BOARD_OMAP54XX) 		+= "OMAP5"
 platname-$(CONFIG_BOARD_AM335X) 		+= "AM335X"
 platname-$(CONFIG_BOARD_ARM_REALVIEW) 	+= "RealView"
 platname-$(CONFIG_BOARD_HPTOUCHPAD)		+= "HP-TouchPad"
@@ -43,6 +44,7 @@ arch-y := $(arch-y)
 
 textofs-y 							:= 0x00000040
 textofs-$(CONFIG_BOARD_OMAP34XX) 	:= 0x84000040
+textofs-$(CONFIG_BOARD_OMAP54XX) 	:= 0x84000040
 textofs-$(CONFIG_BOARD_AM335X) 		:= 0x84000040
 textofs-$(CONFIG_BOARD_ARM_REALVIEW)	:= 0x84000040
 textofs-$(CONFIG_BOARD_HPTOUCHPAD)	:= 0x44000040
@@ -71,6 +73,7 @@ uImage: vmlinux
 	# rm -f vmlinux.raw
 
 # Boards
+core-$(CONFIG_BOARD_OMAP54XX) 		+= arch/arm/plat-omap5/
 core-$(CONFIG_BOARD_OMAP34XX) 		+= arch/arm/plat-omap3/
 core-$(CONFIG_BOARD_AM335X) 		+= arch/arm/plat-am335x/
 core-$(CONFIG_BOARD_ARM_REALVIEW) 	+= arch/arm/plat-realview/
