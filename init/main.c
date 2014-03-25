@@ -158,6 +158,18 @@ corestart_main(uint32_t __unused, uint32_t machine_type, struct atag *atags)
     };
 #endif
 
+#if defined(CONFIG_BOARD_OMAP54XX)
+    /* Artificial RAM base for now. */
+    gBootArgs.physBase = 0x80000000;
+    gBootArgs.memSize = 256 * 1024 * 1024;
+
+    malloc_init((char *)gBootArgs.physBase + gBootArgs.memSize -
+                MALLOC_SIZE, MALLOC_SIZE);
+    is_malloc_inited = 1;
+
+    /* Bringup boot-args. */
+    strncpy(gBootArgs.commandLine, "-no-cache serial=0 -x cpus=1 rd=md0 -v -s", BOOT_LINE_LENGTH);
+#endif
 #ifdef CONFIG_BOARD_HTC_HD2
     /* Artificial RAM base for now. */
     gBootArgs.physBase = 0x20000000;
